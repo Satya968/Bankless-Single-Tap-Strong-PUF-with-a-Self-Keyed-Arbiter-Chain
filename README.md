@@ -214,20 +214,6 @@ uniqueness on at least two boards before trusting the key.
 
 ---
 
-## Citation
-
-If you use this work, please cite the paper (details to be updated after review):
-
-```bibtex
-@inproceedings{sanka2027bankless,
-  author    = {Taral Sanka},
-  title     = {A Bankless Single-Tap Strong {PUF}: Decoupling Modeling Resistance
-               from Reliability with a Self-Keyed Arbiter Chain},
-  booktitle = {Proc. IEEE International Symposium on Circuits and Systems (ISCAS)},
-  year      = {2027},
-  note      = {Submitted}
-}
-```
 
 This design builds on the keyed-LFSR PUF of Chen *et al.*, "A lightweight PUF with
 immunity to machine learning attacks based on a weak-PUF-assisted reconfigurable
