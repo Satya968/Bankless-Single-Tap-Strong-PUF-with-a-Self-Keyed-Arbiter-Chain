@@ -50,29 +50,29 @@ challenge C ──► Galois LFSR M(G) ──► state S ──► single arbite
 
 | Metric | Board 1 | Board 2 |
 |---|---|---|
-| Bit-error rate (majority of 5 reads) | **0.098%** | **0.106%** |
-| CRPs that ever flipped | 0.35% | 0.38% |
+| Bit-error rate (majority of 5 reads) | **0.180%** | **0.126%** |
+| CRPs that ever flipped | 0.63% | 0.43% |
 | Challenges screened / discarded | none | none |
-| Uniformity (2M CRPs) | 49.98% | 49.96% |
-| **Uniqueness** (2M CRPs, board 1 vs board 2) | **49.98%** | |
-| Key reproduction after power cycle | 99.82% CRP agreement | |
-| Logistic regression (1.8M train / 200k test) | 49.89% | 50.09% |
-| MLP 64-64-64 (500k train / 200k test) | 49.99% | 50.09% |
-| Structure-aware CMA-ES, 191 params (key + 128 delays) | 49.1% | 49.4% |
-| Linked CMA-ES, 130 params (key derived from delays) | 49.7% | 49.6% |
-| Linked reliability attack | 50.1% | 50.5% |
+| Uniformity (2M CRPs) | 50.00% | 50.00% |
+| **Uniqueness** (2M CRPs, board 1 vs board 2) | **50.02%** | |
+| Key correct after power cycle | 19 / 19 (99.64 to 99.84% CRP agreement) | |
+| Logistic regression (1.8M train / 200k test) | 49.93% | 50.13% |
+| MLP 64-64-64 (500k train / 200k test) | 50.21% | 50.16% |
+| Structure-aware CMA-ES, 191 params (key + 128 delays) | 50.25% | 50.36% |
+| Linked CMA-ES, 130 params (key derived from delays) | 49.74% | 50.47% |
+| Linked reliability attack | 50.22% | 50.20% |
 
 Implementation (Vivado 2019.1, after place-and-route, UART excluded):
 
 | Block | LUT | FF |
 |---|---|---|
-| Delay chain + TDC arbiter | 181 | 41 |
+| Delay chain + TDC arbiter | 132 | 35 |
 | Galois LFSR | 72 | 64 |
-| Key generator (incl. challenge ROM) | 237 | 94 |
+| Key generator (incl. challenge ROM) | 166 | 92 |
 | Control | 17 | 18 |
-| **PUF core total** | **506** | **217** |
+| **PUF core total** | **387** | **209** |
 
-Timing is met at 100 MHz (5.2 ns slack). Estimated dynamic power of the core: 7 mW.
+Timing is met at 100 MHz (4.96 ns slack).
 One response takes about 46 clock cycles; key generation at boot takes about 0.2 ms.
 
 All measurements are at room temperature and nominal voltage.
@@ -187,6 +187,7 @@ py analyze_sdsem.py caps/board1_2M.npz  caps/board2_2M.npz
 py structural_sdsem.py caps/board1_rel.npz --train 20000 --test 20000
 ```
 
+`structural_sdsem.py` needs `chen2026.py` and `chen_structural.py` from `novel/`.
 
 ---
 
@@ -198,7 +199,7 @@ bitstream it produced the **same key**, and uniqueness was only 46.98%: single-s
 delay differences are smaller than one TDC step and are dominated by the placement,
 which every device shares. The current generator (`arb_signkey.v`) uses whole-chain
 races on public challenges, which accumulate the random variation of all 64 stages;
-uniqueness is now 49.98%. If you port this design to another FPGA, measure
+uniqueness is now 50.02%. If you port this design to another FPGA, measure
 uniqueness on at least two boards before trusting the key.
 
 ---
