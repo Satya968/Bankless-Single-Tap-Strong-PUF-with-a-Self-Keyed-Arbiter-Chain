@@ -187,7 +187,6 @@ py analyze_sdsem.py caps/board1_2M.npz  caps/board2_2M.npz
 py structural_sdsem.py caps/board1_rel.npz --train 20000 --test 20000
 ```
 
-`structural_sdsem.py` needs `chen2026.py` and `chen_structural.py` from `novel/`.
 
 ---
 
